@@ -21,11 +21,9 @@ open class TitleView: UIView {
     button.setTitle(title, for: .normal)
     button.addTarget(self, action: #selector(buttonTouched(_:)), for: .touchUpInside)
     addSubview(button)
-    button.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0).isActive = true
-    button.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0.0).isActive = true
     button.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0.0).isActive = true
     button.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0).isActive = true
-
+    
     // Content
     let contentController = TableController(items: items, initialIndex: initialIndex)
 
@@ -58,9 +56,18 @@ open class TitleView: UIView {
 
   open override func layoutSubviews() {
     super.layoutSubviews()
-    if let superView = self.superview {
-        self.frame = CGRect(x: 0, y: 0, width: superView.frame.width, height: superView.frame.height)
+    
+    if #available(iOS 11.0, *) {
+    } else {
+      if let superview = self.superview {
+        var frame = self.frame
+        frame.origin.x = (superview.frame.size.width - self.button.frame.width) * 0.5
+        frame.origin.y = (superview.frame.size.height - self.button.frame.height) * 0.5
+        frame.size = self.button.frame.size
+        self.frame = frame
+      }
     }
+    
   }
 
   // MARK: - Action
