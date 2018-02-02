@@ -5,8 +5,10 @@ open class ArrowButton: UIButton {
   public init() {
     super.init(frame: CGRect.zero)
     self.imageView?.contentMode = .scaleAspectFit
-    self.setImage(AssetManager.image("dropdown_arrow")?.withRenderingMode(.alwaysTemplate), for: .normal)
-    self.setImage(AssetManager.image("dropdown_arrow")?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+    let imageSize = Config.ArrowButton.Text.font.pointSize * 0.8
+    let arrowImage = AssetManager.image("dropdown_arrow")?.resize(size: CGSize(width: imageSize, height: imageSize))?.withRenderingMode(.alwaysTemplate)
+    self.setImage(arrowImage, for: .normal)
+    self.setImage(arrowImage, for: .highlighted)
     
     self.setTitleColor(Config.ArrowButton.Text.color, for: .normal)
     self.titleLabel?.font = Config.ArrowButton.Text.font
@@ -22,15 +24,12 @@ open class ArrowButton: UIButton {
   open override func layoutSubviews() {
     super.layoutSubviews()
     
-    if self.imageView?.image == nil {
+    guard let image = self.imageView?.image else {
         return
     }
-    
-    let verticalPadding = (self.frame.height - Config.ArrowButton.Text.font.pointSize) * 0.5 * 1.1
-    let adjustedImageSize = self.frame.height - (verticalPadding * 2)
-    
-    self.imageEdgeInsets = UIEdgeInsets(top: verticalPadding, left: self.frame.width - adjustedImageSize, bottom: verticalPadding, right: -(self.frame.width - adjustedImageSize))
-    self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -adjustedImageSize, bottom: 0, right: adjustedImageSize)
+    let padding: CGFloat = 4.0
+    self.imageEdgeInsets = UIEdgeInsets(top: 0, left: self.frame.width - image.size.width + padding, bottom: 0, right: -(self.frame.width - image.size.width + padding))
+    self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -image.size.width, bottom: 0, right: image.size.width)
   }
 
   // MARK: - Touch
@@ -43,5 +42,22 @@ open class ArrowButton: UIButton {
             self.tintColor = Config.ArrowButton.Text.color
         }
     }
+  }
+}
+
+extension UIImage {
+  func resize(size _size: CGSize) -> UIImage? {
+    let widthRatio = _size.width / size.width
+    let heightRatio = _size.height / size.height
+    let ratio = widthRatio < heightRatio ? widthRatio : heightRatio
+    
+    let resizedSize = CGSize(width: size.width * ratio, height: size.height * ratio)
+    
+    UIGraphicsBeginImageContextWithOptions(resizedSize, false, 0.0)
+    draw(in: CGRect(origin: .zero, size: resizedSize))
+    let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return resizedImage
   }
 }
