@@ -2,61 +2,46 @@ import UIKit
 
 open class ArrowButton: UIButton {
 
-  open lazy var label: UILabel = self.makeLabel()
-  open lazy var arrow: UIImageView = self.makeArrow()
-
-  let padding: CGFloat = 10
-  let arrowSize: CGFloat = 15
-
   public init() {
     super.init(frame: CGRect.zero)
-
-    addSubview(label)
-    addSubview(arrow)
+    self.imageView?.contentMode = .scaleAspectFit
+    self.setImage(AssetManager.image("dropdown_arrow")?.withRenderingMode(.alwaysTemplate), for: .normal)
+    self.setImage(AssetManager.image("dropdown_arrow")?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+    
+    self.setTitleColor(Config.ArrowButton.Text.color, for: .normal)
+    self.titleLabel?.font = Config.ArrowButton.Text.font
+    
+    self.tintColor = Config.ArrowButton.Text.color
+    self.setTitleColor(Config.ArrowButton.Text.selectedColor, for: .highlighted)
   }
 
   public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+  
   open override func layoutSubviews() {
     super.layoutSubviews()
-
-    label.center = CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2)
-    arrow.frame.size = CGSize(width: arrowSize, height: arrowSize)
-    arrow.center = CGPoint(x: label.frame.maxX + padding, y: bounds.size.height / 2)
-  }
-
-  open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    return CGSize(width: label.frame.size.width + arrowSize*2 + padding,
-                  height: label.frame.size.height)
-  }
-
-  // MARK: - Views
-
-  func makeLabel() -> UILabel {
-    let label = UILabel()
-    label.textColor = Config.ArrowButton.Text.color
-    label.font = Config.ArrowButton.Text.font
-    label.textAlignment = .center
-
-    return label
-  }
-
-  func makeArrow() -> UIImageView {
-    let arrow = UIImageView()
-    arrow.image = AssetManager.image("dropdown_arrow")?.withRenderingMode(.alwaysTemplate)
-    arrow.tintColor = Config.ArrowButton.Text.color
-
-    return arrow
+    
+    if self.imageView?.image == nil {
+        return
+    }
+    
+    let verticalPadding = (self.frame.height - Config.ArrowButton.Text.font.pointSize) * 0.5 * 1.1
+    let adjustedImageSize = self.frame.height - (verticalPadding * 2)
+    
+    self.imageEdgeInsets = UIEdgeInsets(top: verticalPadding, left: self.frame.width - adjustedImageSize, bottom: verticalPadding, right: -(self.frame.width - adjustedImageSize))
+    self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -adjustedImageSize, bottom: 0, right: adjustedImageSize)
   }
 
   // MARK: - Touch
 
   open override var isHighlighted: Bool {
     didSet {
-      label.textColor = isHighlighted ? Config.ArrowButton.Text.selectedColor : Config.ArrowButton.Text.color
-      arrow.tintColor = isHighlighted ? Config.ArrowButton.Text.selectedColor : Config.ArrowButton.Text.color
+        if self.isHighlighted {
+            self.tintColor = Config.ArrowButton.Text.selectedColor
+        } else {
+            self.tintColor = Config.ArrowButton.Text.color
+        }
     }
   }
 }
