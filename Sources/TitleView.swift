@@ -7,7 +7,7 @@ open class TitleView: UIView {
   open var action: ((Int) -> Void)?
     
   override open var intrinsicContentSize: CGSize {
-    return UILayoutFittingExpandedSize
+    return UIView.layoutFittingExpandedSize
   }
 
   // MARK: - Initialization
