@@ -46,6 +46,14 @@ open class DropdownController: UIViewController {
   public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    func configure() {
+        topLine.backgroundColor = Config.topLineColor.cgColor
+        
+        if let tableController = self.contentController as? TableController {
+            tableController.configure()
+        }
+    }
 
   // MARK: - Layout
 

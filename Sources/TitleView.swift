@@ -69,6 +69,11 @@ open class TitleView: UIView {
     }
     
   }
+    
+    public func configure() {
+        dropdown.configure()
+        button.configure()
+    }
 
   // MARK: - Action
 

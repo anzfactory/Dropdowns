@@ -31,6 +31,14 @@ open class ArrowButton: UIButton {
     self.imageEdgeInsets = UIEdgeInsets(top: 0, left: self.frame.width - image.size.width + padding, bottom: 0, right: -(self.frame.width - image.size.width + padding))
     self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -image.size.width, bottom: 0, right: image.size.width)
   }
+    
+    func configure() {
+        self.setTitleColor(Config.ArrowButton.Text.color, for: .normal)
+        self.titleLabel?.font = Config.ArrowButton.Text.font
+        
+        self.tintColor = Config.ArrowButton.Text.color
+        self.setTitleColor(Config.ArrowButton.Text.selectedColor, for: .highlighted)
+    }
 
   // MARK: - Touch
 

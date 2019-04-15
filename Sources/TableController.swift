@@ -34,6 +34,11 @@ open class TableController: UIViewController, UITableViewDataSource, UITableView
     view.addSubview(tableView)
     tableView.reloadData()
   }
+    
+    func configure() {
+        view.backgroundColor = Config.List.backgroundColor
+        tableView.reloadData()
+    }
 
   // MARK: - Layout
 

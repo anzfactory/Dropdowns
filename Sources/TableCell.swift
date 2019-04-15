@@ -29,6 +29,13 @@ open class TableCell: UITableViewCell {
 
     contentView.frame = bounds
   }
+    
+    func configure() {
+        backgroundColor = Config.List.backgroundColor
+        label.textColor = Config.List.DefaultCell.Text.color
+        checkmark.tintColor = Config.List.DefaultCell.Text.color
+        separator.backgroundColor = Config.List.DefaultCell.separatorColor
+    }
 
   // MARK: - Controls
 
