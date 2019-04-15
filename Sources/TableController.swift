@@ -36,8 +36,13 @@ open class TableController: UIViewController, UITableViewDataSource, UITableView
   }
     
     func configure() {
-        view.backgroundColor = Config.List.backgroundColor
-        tableView.reloadData()
+        topView.backgroundColor = Config.List.backgroundColor
+        
+        tableView.visibleCells.forEach { (cell) in
+            if let configurableCell = cell as? TableCell {
+                configurableCell.configure()
+            }
+        }
     }
 
   // MARK: - Layout
