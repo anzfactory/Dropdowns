@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
   s.ios.frameworks = 'UIKit'
   s.ios.resource = 'Sources/Dropdown.bundle'
 
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
 
 end
